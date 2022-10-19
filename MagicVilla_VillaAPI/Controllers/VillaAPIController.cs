@@ -15,7 +15,7 @@ public class VillaAPIController : ControllerBase
     return Ok(VillaStore.villaList);
   }
 
-  [HttpGet("{id:int}",Name = "GetVilla")]
+  [HttpGet("{id:int}", Name = "GetVilla")]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -46,6 +46,12 @@ public class VillaAPIController : ControllerBase
       //  return BadRequest(ModelState);
       //}
 
+      if (VillaStore.villaList.FirstOrDefault(u => u.Name.ToLower() == villaDTO.Name.ToLower()) != null)
+      {
+        ModelState.AddModelError("CustomError","Villa already Exists!");
+        return BadRequest(ModelState);
+      }
+
       if (villaDTO == null)
       {
         return BadRequest(villaDTO);
@@ -59,7 +65,7 @@ public class VillaAPIController : ControllerBase
       villaDTO.Id = VillaStore.villaList.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
       VillaStore.villaList.Add(villaDTO);
 
-      return CreatedAtRoute("GetVilla", new {id = villaDTO.Id},villaDTO);
+      return CreatedAtRoute("GetVilla", new { id = villaDTO.Id }, villaDTO);
     }
   }
 }
