@@ -35,12 +35,17 @@ public class VillaAPIController : ControllerBase
   }
 
   [HttpPost]
-  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status201Created)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public ActionResult<VillaDTO> CreateVilla([FromBody] VillaDTO villaDTO)
   {
     {
+      //if (!ModelState.IsValid)
+      //{
+      //  return BadRequest(ModelState);
+      //}
+
       if (villaDTO == null)
       {
         return BadRequest(villaDTO);
